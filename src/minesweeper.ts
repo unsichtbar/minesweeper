@@ -36,7 +36,7 @@ export default class Minesweeper {
         }
         this.fillMines(this.numMines, this._board, startNode);
     }
-    tile({ x, y }: ICoords) {
+    reveal({ x, y }: ICoords) {
         if(this.isOutOfBounds({x, y})) return undefined;
         return this.bombsAround({ x, y });
     }
