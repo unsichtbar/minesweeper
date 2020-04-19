@@ -1,16 +1,22 @@
-enum DIFFICULTY {
+export enum DIFFICULTY {
     EASY, MEDIUM, HARD
 }
 
-interface StartNode {
+interface ICoords {
     x: number
     y: number
 }
 
-class Minesweeper {
+
+let BOMB = -1;
+type BOMB = -1;
+type Tile = BOMB | number;
+
+
+export default class Minesweeper {
     private _board: Array<Array<Tile>>
     private numMines: number
-    constructor(difficulty: DIFFICULTY = DIFFICULTY.MEDIUM, startNode: StartNode = { x: 0, y: 0 }) {
+    constructor(difficulty: DIFFICULTY = DIFFICULTY.MEDIUM, startNode: ICoords = { x: 0, y: 0 }) {
         switch (difficulty) {
             case DIFFICULTY.EASY: {
                 this._board = this.makeBoard(10);
@@ -29,31 +35,31 @@ class Minesweeper {
             }
         }
         this.fillMines(this.numMines, this._board, startNode);
-        this.fillHints(this._board);
+        //  this.fillHints(this._board);
     }
-    get board() {
+    tile({ x, y }: ICoords) {
+        if (!this.board[x] || !this.board[x][y])
+            return undefined;
+        return this.bombsAround({ x, y });
+    }
+    private get board() {
         return this._board;
     }
-
-    fillHints(board: Array<Array<Tile>>) {
-        for (let x = 0; x < board.length; x++) {
-            for (let y = 0; y < board.length; y++) {
-                if (board[x][y] != BOMB) {
-                    let surroundMines = 0;
-                    for (let i = -1; i < 2; i++) {
-                        for (let j = -1; j < 2; j++) {
-                            if (board[x + i] && board[x + i][y + j] != undefined && board[x + i][y + j] == BOMB) {
-                                surroundMines++;
-                            }
-                        }
-                    }
-                    board[x][y] = surroundMines;
+    private bombsAround({ x, y }: ICoords): number {
+        let surroundMines = 0;
+        if (this.board[x][y] == BOMB) return -1;
+        for (let i = -1; i < 2; i++) {
+            for (let j = -1; j < 2; j++) {
+                if (this.board[x + i] && this.board[x + i][y + j] != undefined && this.board[x + i][y + j] == BOMB) {
+                    surroundMines++;
                 }
-
             }
         }
+        return surroundMines;
+
     }
-    fillMines(numMines: number, board: Array<Array<Tile>>, startNode: StartNode) {
+    
+    private fillMines(numMines: number, board: Array<Array<Tile>>, startNode: ICoords) {
         let boardLength = board.length;
         let placedMines = 0;
         while (placedMines < numMines) {
@@ -65,7 +71,7 @@ class Minesweeper {
             }
         }
     }
-    makeBoard(n: number): Array<Array<Tile>> {
+    private makeBoard(n: number): Array<Array<Tile>> {
         let array = new Array(n);
         for (let i = 0; i < n; i++) {
             array[i] = new Array(n);
@@ -74,10 +80,3 @@ class Minesweeper {
     }
 }
 
-let BOMB = -1;
-type BOMB = -1;
-type Tile = BOMB | number;
-
-
-let game = new Minesweeper(DIFFICULTY.HARD);
-console.table(game.board)
