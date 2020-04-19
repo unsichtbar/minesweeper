@@ -35,12 +35,13 @@ export default class Minesweeper {
             }
         }
         this.fillMines(this.numMines, this._board, startNode);
-        //  this.fillHints(this._board);
     }
     tile({ x, y }: ICoords) {
-        if (!this.board[x] || !this.board[x][y])
-            return undefined;
+        if(this.isOutOfBounds({x, y})) return undefined;
         return this.bombsAround({ x, y });
+    }
+    private isOutOfBounds({x, y}: ICoords) {
+        return (x >= this.board.length || x < 0 || y < 0 || y >= this.board.length) 
     }
     private get board() {
         return this._board;
@@ -58,7 +59,7 @@ export default class Minesweeper {
         return surroundMines;
 
     }
-    
+
     private fillMines(numMines: number, board: Array<Array<Tile>>, startNode: ICoords) {
         let boardLength = board.length;
         let placedMines = 0;
