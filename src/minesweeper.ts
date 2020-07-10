@@ -79,5 +79,9 @@ export default class Minesweeper {
         }
         return array;
     }
+
+    public getBoardSize(): {x:number, y: number} {
+        return {x: this.board.length, y: this.board[0].length}
+    }
 }
 
