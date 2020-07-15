@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { flag, reveal, difficultySelected, selectGame } from "./gameSlice";
-import { DifficultySelection } from "../DifficultySelection";
+import { DifficultySelection } from "./DifficultySelection";
 import { Tile } from "./Tile";
 export const Game: React.FC<any> = (props) => {
   const game = useSelector(selectGame);
@@ -16,6 +16,7 @@ export const Game: React.FC<any> = (props) => {
           yPos={j}
           key={`${i}${j}`}
           value={game?.board?.[i][j]}
+          bombsAround={game?.game?.reveal({ x, y })}
           onClick={() => {
             //   dispatch({ type: "REVEAL", payload: { x: i, y: j } });
             dispatch(reveal({ x, y }));

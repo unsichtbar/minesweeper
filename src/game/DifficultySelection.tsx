@@ -1,5 +1,5 @@
 import React from "react";
-import { DIFFICULTY } from "./minesweeper";
+import { DIFFICULTY } from "../minesweeper";
 
 interface DifficultySelectionProps {
   onSelection(difficulty: DIFFICULTY): void;

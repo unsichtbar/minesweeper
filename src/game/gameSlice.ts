@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppThunk, RootState } from "../store/store";
+import { RootState } from "../app/store";
 import Game, { DIFFICULTY } from "../minesweeper";
 
 interface GameState {
   game: Game | null;
-  board: Array<Array<number | undefined>> | null;
+  board: Array<Array<CLICK_TYPE | undefined>> | null;
   gameOver: boolean;
 }
 
@@ -15,26 +15,31 @@ const initialState: GameState = {
 };
 
 export const FLAG = 7;
-
+export enum CLICK_TYPE {
+  LEFT,
+  RIGHT,
+}
 export const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
-    reveal: (state, action: PayloadAction<{ x: number; y: number }>) => {
+    reveal(state, action: PayloadAction<{ x: number; y: number }>) {
       const { x, y } = action.payload;
       console.log(state.board);
       if (state.board) {
-        state.board[x][y] = state.game?.reveal({ x, y });
+        state.board[x][y] = CLICK_TYPE.LEFT; //state.game?.reveal({ x, y });
       }
     },
-    flag: (state, action: PayloadAction<{ x: number; y: number }>) => {
+    flag(state, action: PayloadAction<{ x: number; y: number }>) {
       if (state.board) {
-        if (state.board[action.payload.x][action.payload.y] == FLAG)
+        if (
+          state.board[action.payload.x][action.payload.y] === CLICK_TYPE.RIGHT
+        )
           state.board[action.payload.x][action.payload.y] = undefined;
-        else state.board[action.payload.x][action.payload.y] = FLAG;
+        else state.board[action.payload.x][action.payload.y] = CLICK_TYPE.RIGHT;
       }
     },
-    difficultySelected: (state, action: PayloadAction<DIFFICULTY>) => {
+    difficultySelected(state, action: PayloadAction<DIFFICULTY>) {
       switch (action.payload) {
         case DIFFICULTY.HARD:
           state.game = new Game(DIFFICULTY.HARD);
@@ -51,15 +56,18 @@ export const gameSlice = createSlice({
 
       let { x, y } = state.game.getBoardSize();
       state.board = makeBoard(x, y);
-      console.log(state.board);
+      console.log("game started, board is", state.board);
     },
   },
 });
 
-function makeBoard(x: number, y: number): Array<Array<number | undefined>> {
+function makeBoard(x: number, y: number): Array<Array<CLICK_TYPE>> {
   let array = new Array(x);
   for (let i = 0; i < x; i++) {
     array[i] = new Array(y);
+    for (let j = 0; j < y; j++) {
+      array[i][j] = null;
+    }
   }
   return array;
 }

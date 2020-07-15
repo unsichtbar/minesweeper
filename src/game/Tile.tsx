@@ -1,14 +1,16 @@
 import React from "react";
-import { FLAG } from "./gameSlice";
+import { FLAG, CLICK_TYPE } from "./gameSlice";
 export const Tile: React.FC<{
   xPos: number;
   yPos: number;
   onClick: any;
   onRightClick: any;
-  value: number | undefined;
-}> = ({ xPos, yPos, onClick, onRightClick, value }) => {
-  let text = value ? String(value) : "";
-  if (value == FLAG) text = "🚩";
+  value: CLICK_TYPE | undefined;
+  bombsAround: number | undefined;
+}> = ({ xPos, yPos, onClick, onRightClick, value, bombsAround }) => {
+  let text = "";
+  if (value === CLICK_TYPE.LEFT) text = String(bombsAround);
+  if (value === CLICK_TYPE.RIGHT) text = "🚩";
   return (
     <span
       key={`${xPos}${yPos}`}
