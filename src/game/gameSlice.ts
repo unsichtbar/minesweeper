@@ -1,9 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../app/store";
-import Game, { DIFFICULTY } from "../minesweeper";
+import {
+  DIFFICULTY,
+  startGame,
+  Minesweeper,
+  getBoardSize,
+} from "../minesweeper";
 
 interface GameState {
-  game: Game | null;
+  game: Minesweeper | null;
   board: Array<Array<CLICK_TYPE | undefined>> | null;
   gameOver: boolean;
 }
@@ -27,7 +32,7 @@ export const gameSlice = createSlice({
       const { x, y } = action.payload;
       console.log(state.board);
       if (state.board) {
-        state.board[x][y] = CLICK_TYPE.LEFT; //state.game?.reveal({ x, y });
+        state.board[x][y] = CLICK_TYPE.LEFT;
       }
     },
     flag(state, action: PayloadAction<{ x: number; y: number }>) {
@@ -42,21 +47,20 @@ export const gameSlice = createSlice({
     difficultySelected(state, action: PayloadAction<DIFFICULTY>) {
       switch (action.payload) {
         case DIFFICULTY.HARD:
-          state.game = new Game(DIFFICULTY.HARD);
+          state.game = startGame(DIFFICULTY.HARD);
           break;
         case DIFFICULTY.MEDIUM:
-          state.game = new Game(DIFFICULTY.MEDIUM);
+          state.game = startGame(DIFFICULTY.MEDIUM);
           break;
         case DIFFICULTY.EASY:
-          state.game = new Game(DIFFICULTY.EASY);
+          state.game = startGame(DIFFICULTY.EASY);
           break;
         default:
-          state.game = new Game(DIFFICULTY.EASY);
+          state.game = startGame(DIFFICULTY.EASY);
       }
 
-      let { x, y } = state.game.getBoardSize();
+      let { x, y } = getBoardSize(state.game);
       state.board = makeBoard(x, y);
-      console.log("game started, board is", state.board);
     },
   },
 });

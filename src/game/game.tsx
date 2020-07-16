@@ -3,10 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { flag, reveal, difficultySelected, selectGame } from "./gameSlice";
 import { DifficultySelection } from "./DifficultySelection";
 import { Tile } from "./Tile";
+import { getBoardSize, reveal as gameReveal } from "../minesweeper";
 export const Game: React.FC<any> = (props) => {
   const game = useSelector(selectGame);
   const dispatch = useDispatch();
-  const { x, y } = game.game?.getBoardSize() ?? { x: 0, y: 0 };
+  const { x, y } = getBoardSize(game.game) ?? { x: 0, y: 0 };
   let elements: Array<JSX.Element> = [];
   for (let i = 0; i < x; i++) {
     for (let j = 0; j < y; j++) {
@@ -16,7 +17,7 @@ export const Game: React.FC<any> = (props) => {
           yPos={j}
           key={`${i}${j}`}
           value={game?.board?.[i][j]}
-          bombsAround={game?.game?.reveal({ x, y })}
+          bombsAround={gameReveal(game.game, { x, y })}
           onClick={() => {
             //   dispatch({ type: "REVEAL", payload: { x: i, y: j } });
             dispatch(reveal({ x, y }));

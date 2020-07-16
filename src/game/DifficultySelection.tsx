@@ -7,29 +7,21 @@ interface DifficultySelectionProps {
 export const DifficultySelection: React.FC<DifficultySelectionProps> = (
   props
 ) => {
+  const difficulties = [
+    [DIFFICULTY.EASY, "Easy"],
+    [DIFFICULTY.MEDIUM, "Medium"],
+    [DIFFICULTY.HARD, "Hard"],
+  ];
   return (
     <section>
-      <button
-        onClick={() => {
-          props.onSelection(DIFFICULTY.EASY);
-        }}
-      >
-        Easy
-      </button>
-      <button
-        onClick={() => {
-          props.onSelection(DIFFICULTY.MEDIUM);
-        }}
-      >
-        Medium
-      </button>
-      <button
-        onClick={() => {
-          props.onSelection(DIFFICULTY.HARD);
-        }}
-      >
-        Hard
-      </button>
+      {difficulties.map((pair) => (
+        <button
+          key={pair[1]}
+          onClick={() => props.onSelection(pair[0] as DIFFICULTY)}
+        >
+          {pair[1]}
+        </button>
+      ))}
     </section>
   );
 };
