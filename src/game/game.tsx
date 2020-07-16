@@ -15,18 +15,15 @@ export const Game: React.FC<any> = (props) => {
         <Tile
           xPos={i}
           yPos={j}
-          key={`${i}${j}`}
+          key={`x${i}y${j}`}
           value={game?.board?.[i][j]}
-          bombsAround={gameReveal(game.game, { x, y })}
+          bombsAround={gameReveal(game.game, { x: i, y: j })}
           onClick={() => {
-            //   dispatch({ type: "REVEAL", payload: { x: i, y: j } });
-            dispatch(reveal({ x, y }));
+            dispatch(reveal({ x: i, y: j }));
           }}
           onRightClick={(e: any) => {
             e.preventDefault();
-            console.log("we clickin", i, j);
-            //dispatch({ type: "FLAG", payload: { x: i, y: j } });
-            dispatch(flag({ x, y }));
+            dispatch(flag({ x: i, y: j }));
           }}
         />
       );

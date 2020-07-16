@@ -18,10 +18,7 @@ export interface Minesweeper {
   numMines: number;
 }
 
-export function startGame(
-  difficulty: DIFFICULTY = DIFFICULTY.MEDIUM,
-  startNode: ICoords = { x: 0, y: 0 }
-) {
+export function startGame(difficulty: DIFFICULTY = DIFFICULTY.MEDIUM) {
   let game: Minesweeper = {} as any;
   switch (difficulty) {
     case DIFFICULTY.EASY: {
@@ -40,7 +37,6 @@ export function startGame(
       break;
     }
   }
-  fillMines(game.numMines, game.board, startNode);
   return game;
 }
 
@@ -56,21 +52,22 @@ function isOutOfBounds(game: Minesweeper, { x, y }: ICoords) {
   return x >= game.board.length || x < 0 || y < 0 || y >= game.board.length;
 }
 
-function fillMines(
-  numMines: number,
-  board: Array<Array<Tile>>,
+export function fillMines(
+  game: Minesweeper | null | undefined,
   startNode: ICoords
 ) {
-  let boardLength = board.length;
+  if (!game) return undefined;
+  let boardLength = game.board.length;
   let placedMines = 0;
-  while (placedMines < numMines) {
+  while (placedMines < game.numMines) {
     let x = Math.floor(Math.random() * boardLength);
     let y = Math.floor(Math.random() * boardLength);
-    if (board[x][y] != BOMB && x != startNode.x && y != startNode.y) {
-      board[x][y] = BOMB;
+    if (game.board[x][y] != BOMB && x != startNode.x && y != startNode.y) {
+      game.board[x][y] = BOMB;
       placedMines++;
     }
   }
+  return game;
 }
 
 export function getBoardSize(

@@ -13,7 +13,7 @@ export const Tile: React.FC<{
   if (value === CLICK_TYPE.RIGHT) text = "🚩";
   return (
     <span
-      key={`${xPos}${yPos}`}
+      key={`x${xPos}y${yPos}`}
       onClick={onClick}
       onContextMenu={onRightClick}
       style={{ border: "1px solid black", width: "25px", height: "25px" }}
