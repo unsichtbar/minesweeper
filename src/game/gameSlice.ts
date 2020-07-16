@@ -38,8 +38,8 @@ export const gameSlice = createSlice({
         state.started = true;
       }
       if (state.board && state.board[0] && state.board[0].length > 0) {
-        console.log("x, y", x, y);
-        state.board[x][y] = CLICK_TYPE.LEFT;
+        if (state.board[x][y] !== CLICK_TYPE.RIGHT)
+          state.board[x][y] = CLICK_TYPE.LEFT;
       }
     },
     flag(state, action: PayloadAction<{ x: number; y: number }>) {
