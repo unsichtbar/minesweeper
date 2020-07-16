@@ -30,21 +30,23 @@ export const Game: React.FC<any> = (props) => {
     }
   }
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: `repeat(${game?.board?.length}, auto)`,
-        gridTemplateRows: `repeat(${game?.board?.[0].length}, auto)`,
-      }}
-    >
-      {!game.game && (
-        <DifficultySelection
-          onSelection={(difficulty) => {
-            dispatch(difficultySelected(difficulty));
-          }}
-        />
-      )}
-      {game.game && elements}
+    <div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: `repeat(${game?.board?.length}, auto)`,
+          gridTemplateRows: `repeat(${game?.board?.[0].length}, auto)`,
+        }}
+      >
+        {!game.game && (
+          <DifficultySelection
+            onSelection={(difficulty) => {
+              dispatch(difficultySelected(difficulty));
+            }}
+          />
+        )}
+        {game.game && elements}
+      </div>
     </div>
   );
 };
