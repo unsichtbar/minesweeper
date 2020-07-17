@@ -39,14 +39,15 @@ export const Game: React.FC<any> = (props) => {
           gridTemplateRows: `repeat(${game?.board?.[0].length}, 1fr)`,
         }}
       >
-        {!game.game && (
+        {game.gameOver && <div>you lose</div>}
+        {!game.difficultySelected && !game.gameOver && (
           <DifficultySelection
             onSelection={(difficulty) => {
               dispatch(difficultySelected(difficulty));
             }}
           />
         )}
-        {game.game && elements}
+        {!game.gameOver && game.difficultySelected && elements}
       </div>
     </div>
   );

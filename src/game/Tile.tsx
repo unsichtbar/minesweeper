@@ -1,5 +1,5 @@
 import React from "react";
-import { FLAG, CLICK_TYPE } from "./gameSlice";
+import { CLICK_TYPE } from "./gameSlice";
 import "./Tile.css";
 export const Tile: React.FC<{
   xPos: number;

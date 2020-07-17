@@ -4,13 +4,13 @@ export enum DIFFICULTY {
   HARD,
 }
 
-interface ICoords {
+export interface ICoords {
   x: number;
   y: number;
 }
 
-let BOMB = -1;
-type BOMB = -1;
+export let BOMB = -1;
+export type BOMB = -1;
 type Tile = BOMB | number;
 
 export interface Minesweeper {
@@ -18,7 +18,7 @@ export interface Minesweeper {
   numMines: number;
 }
 
-export function startGame(difficulty: DIFFICULTY = DIFFICULTY.MEDIUM) {
+export function createGame(difficulty: DIFFICULTY = DIFFICULTY.MEDIUM) {
   let game: Minesweeper = {} as any;
   switch (difficulty) {
     case DIFFICULTY.EASY: {
@@ -40,11 +40,7 @@ export function startGame(difficulty: DIFFICULTY = DIFFICULTY.MEDIUM) {
   return game;
 }
 
-export function reveal(
-  game: Minesweeper | null | undefined,
-  { x, y }: ICoords
-) {
-  if (game === null || game === undefined) return undefined;
+export function reveal(game: Minesweeper, { x, y }: ICoords) {
   if (isOutOfBounds(game, { x, y })) return undefined;
   return bombsAround(game, { x, y });
 }
@@ -52,17 +48,13 @@ function isOutOfBounds(game: Minesweeper, { x, y }: ICoords) {
   return x >= game.board.length || x < 0 || y < 0 || y >= game.board.length;
 }
 
-export function fillMines(
-  game: Minesweeper | null | undefined,
-  startNode: ICoords
-) {
-  if (!game) return undefined;
+export function fillMines(game: Minesweeper, startNode: ICoords) {
   let boardLength = game.board.length;
   let placedMines = 0;
   while (placedMines < game.numMines) {
     let x = Math.floor(Math.random() * boardLength);
     let y = Math.floor(Math.random() * boardLength);
-    if (game.board[x][y] != BOMB && x != startNode.x && y != startNode.y) {
+    if (game.board[x][y] !== BOMB && x !== startNode.x && y !== startNode.y) {
       game.board[x][y] = BOMB;
       placedMines++;
     }
@@ -70,10 +62,7 @@ export function fillMines(
   return game;
 }
 
-export function getBoardSize(
-  game: Minesweeper | null | undefined
-): { x: number; y: number } {
-  if (game === null || game === undefined) return { x: -1, y: -1 };
+export function getBoardSize(game: Minesweeper): { x: number; y: number } {
   return { x: game.board.length, y: game.board[0].length };
 }
 
@@ -87,13 +76,13 @@ function makeBoard(n: number): Array<Array<Tile>> {
 
 function bombsAround(game: Minesweeper, { x, y }: ICoords): number {
   let surroundMines = 0;
-  if (game.board[x][y] == BOMB) return -1;
+  if (game.board[x][y] === BOMB) return -1;
   for (let i = -1; i < 2; i++) {
     for (let j = -1; j < 2; j++) {
       if (
         game.board[x + i] &&
-        game.board[x + i][y + j] != undefined &&
-        game.board[x + i][y + j] == BOMB
+        game.board[x + i][y + j] !== undefined &&
+        game.board[x + i][y + j] === BOMB
       ) {
         surroundMines++;
       }
@@ -101,85 +90,3 @@ function bombsAround(game: Minesweeper, { x, y }: ICoords): number {
   }
   return surroundMines;
 }
-
-// export default class MinesweeperOld {
-//   private _board: Array<Array<Tile>>;
-//   private numMines: number;
-//   constructor(
-//     difficulty: DIFFICULTY = DIFFICULTY.MEDIUM,
-//     startNode: ICoords = { x: 0, y: 0 }
-//   ) {
-//     switch (difficulty) {
-//       case DIFFICULTY.EASY: {
-//         this._board = this.makeBoard(10);
-//         this.numMines = 10;
-//         break;
-//       }
-//       case DIFFICULTY.MEDIUM: {
-//         this._board = this.makeBoard(18);
-//         this.numMines = 40;
-//         break;
-//       }
-//       case DIFFICULTY.HARD: {
-//         this._board = this.makeBoard(25);
-//         this.numMines = 99;
-//         break;
-//       }
-//     }
-//     this.fillMines(this.numMines, this._board, startNode);
-//   }
-//   reveal({ x, y }: ICoords) {
-//     if (this.isOutOfBounds({ x, y })) return undefined;
-//     return this.bombsAround({ x, y });
-//   }
-//   private isOutOfBounds({ x, y }: ICoords) {
-//     return x >= this.board.length || x < 0 || y < 0 || y >= this.board.length;
-//   }
-//   private get board() {
-//     return this._board;
-//   }
-//   private bombsAround({ x, y }: ICoords): number {
-//     let surroundMines = 0;
-//     if (this.board[x][y] == BOMB) return -1;
-//     for (let i = -1; i < 2; i++) {
-//       for (let j = -1; j < 2; j++) {
-//         if (
-//           this.board[x + i] &&
-//           this.board[x + i][y + j] != undefined &&
-//           this.board[x + i][y + j] == BOMB
-//         ) {
-//           surroundMines++;
-//         }
-//       }
-//     }
-//     return surroundMines;
-//   }
-
-//   private fillMines(
-//     numMines: number,
-//     board: Array<Array<Tile>>,
-//     startNode: ICoords
-//   ) {
-//     let boardLength = board.length;
-//     let placedMines = 0;
-//     while (placedMines < numMines) {
-//       let x = Math.floor(Math.random() * boardLength);
-//       let y = Math.floor(Math.random() * boardLength);
-//       if (board[x][y] != BOMB && x != startNode.x && y != startNode.y) {
-//         board[x][y] = BOMB;
-//         placedMines++;
-//       }
-//     }
-//   }
-//   private makeBoard(n: number): Array<Array<Tile>> {
-//     let array = new Array(n);
-//     for (let i = 0; i < n; i++) {
-//       array[i] = new Array(n);
-//     }
-//     return array;
-//   }
-
-//   public getBoardSize(): { x: number; y: number } {
-//     return { x: this.board.length, y: this.board[0].length };
-//   }
-// }
