@@ -19,10 +19,19 @@ export const Tile: React.FC<{
         onClick={onClick}
         onContextMenu={onRightClick}
         className="square-content"
-        // style={{ border: "1px solid black" }}
+        style={{
+          backgroundColor: CLICK_TYPE.LEFT === value ? "#D4C192" : "",
+        }}
       >
         <div>
-          <span>{text}</span>
+          <span
+            style={{
+              color: CLICK_TYPE.LEFT === value ? "black" : "",
+              fontSize: "2em",
+            }}
+          >
+            {text}
+          </span>
         </div>
       </span>
     </span>

@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { flag, reveal, difficultySelected, selectGame } from "./gameSlice";
 import { DifficultySelection } from "./DifficultySelection";
+import "./game.css";
 import { Tile } from "./Tile";
 import { getBoardSize, reveal as gameReveal } from "../minesweeper";
 export const Game: React.FC<any> = (props) => {
@@ -32,10 +33,10 @@ export const Game: React.FC<any> = (props) => {
   return (
     <div>
       <div
+        className="game-container"
         style={{
-          display: "grid",
-          gridTemplateColumns: `repeat(${game?.board?.length}, auto)`,
-          gridTemplateRows: `repeat(${game?.board?.[0].length}, auto)`,
+          gridTemplateColumns: `repeat(${game?.board?.length}, 1fr)`,
+          gridTemplateRows: `repeat(${game?.board?.[0].length}, 1fr)`,
         }}
       >
         {!game.game && (

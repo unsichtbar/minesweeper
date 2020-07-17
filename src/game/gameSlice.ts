@@ -44,6 +44,8 @@ export const gameSlice = createSlice({
     },
     flag(state, action: PayloadAction<{ x: number; y: number }>) {
       if (state.board) {
+        if (state.board[action.payload.x][action.payload.y] === CLICK_TYPE.LEFT)
+          return;
         if (
           state.board[action.payload.x][action.payload.y] === CLICK_TYPE.RIGHT
         )
